@@ -16,7 +16,8 @@ def create_db():
 def get_short_url(url):
     with psycopg2.connect(DATABASE_URL) as conn:
         c = conn.cursor()
-        id_ = c.execute("SELECT id FROM urls WHERE url = %s", (url,)).fetchone()
+        c.execute("SELECT id FROM urls WHERE url = %s", (url,))
+        id_ = c.fetchone()
     if id_:
         id_ = base62.encode(id_[0])
     return id_
@@ -30,7 +31,8 @@ def get_full_url(url):
 
     with psycopg2.connect(DATABASE_URL) as conn:
         c = conn.cursor()
-        url = c.execute("SELECT url FROM urls WHERE id = %s", (id_,)).fetchone()
+        c.execute("SELECT url FROM urls WHERE id = %s", (id_,))
+        url = c.fetchone()
     if url:
         return url[0]
 
@@ -42,7 +44,8 @@ def create_short_url(url):
 
     with psycopg2.connect(DATABASE_URL) as conn:
         c = conn.cursor()
-        num_of_urls = c.execute("SELECT COUNT(*) FROM urls").fetchone()[0]
+        c.execute("SELECT COUNT(*) FROM urls")
+        num_of_urls = c.fetchone()[0]
         c.execute("INSERT INTO urls (id, url) VALUES(%s, %s);", (num_of_urls, url))
 
     return get_short_url(url)
