@@ -1,0 +1,52 @@
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+
+<body class="text-center">
+    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+        <main role="main" class="inner cover">
+            <h1 class="cover-heading">URL shortener</h1>
+            <form id="url-shortener">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm input-group mb-3">
+                            <input type="text" class="form-control" id="full-url" placeholder="Url to short">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="submit">Shorten</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div clas="row">
+                        <p id="short-url"></p>
+                    </div>
+                </div>
+            </form>
+        </main>
+    </div>
+    <script>
+        document.querySelector('form#url-shortener').addEventListener('submit', e => {
+            e.preventDefault();
+
+            fetch("/short", {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    method: "POST",
+                    body: JSON.stringify({
+                        url: document.getElementById('full-url').value
+                    })
+                })
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(data) {
+                    document.getElementById("short-url").innerHTML = data.url;
+                })
+        });
+    </script>
+</body>
+
+</html>
