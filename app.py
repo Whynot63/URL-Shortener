@@ -5,6 +5,7 @@ from werkzeug.exceptions import BadRequest, NotFound
 from short_url import create_db, create_short_url, get_full_url, create_short_url
 
 app = Flask(__name__)
+create_db()
 
 
 @app.route("/")
@@ -36,5 +37,4 @@ def full(short_url):
 
 
 if __name__ == "__main__":
-    create_db()
     app.run()

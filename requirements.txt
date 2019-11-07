@@ -1,0 +1,4 @@
+flask
+base62
+psycopg2
+gunicorn
